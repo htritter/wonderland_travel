@@ -1651,6 +1651,9 @@
               <button class="form-submit" onclick="handleSubmit(event)">
                 ✨ Send My Free Quote Request
               </button>
+              <p id="formError" style="display:none;margin-top:1rem;color:#ef5350;font-size:0.88rem;text-align:center;font-weight:600;">
+                Something went wrong — please try again or email us directly.
+              </p>
             </div>
             <div class="form-success" id="formSuccess">
               <div style="font-size:4rem; margin-bottom:1rem;">🎉</div>
@@ -1790,26 +1793,50 @@
     revealEls.forEach(el => observer.observe(el));
 
     // ── Form submit ──────────────────────────────────────────
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
       e.preventDefault();
-      const fname = document.getElementById('fname').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const dest  = document.getElementById('destination').value;
+
+      const fname       = document.getElementById('fname').value.trim();
+      const lname       = document.getElementById('lname').value.trim();
+      const email       = document.getElementById('email').value.trim();
+      const phone       = document.getElementById('phone').value.trim();
+      const dest        = document.getElementById('destination').value;
+      const travelDate  = document.getElementById('travel-date').value;
+      const travelers   = document.getElementById('travelers').value;
+      const message     = document.getElementById('message').value.trim();
 
       if (!fname || !email || !dest) {
-        // Simple shake animation for required fields
         [document.getElementById('fname'), document.getElementById('email'), document.getElementById('destination')]
           .filter(el => !el.value.trim())
           .forEach(el => {
             el.style.borderColor = '#ef5350';
-            el.style.animation = 'none';
             setTimeout(() => el.style.borderColor = '', 2000);
           });
         return;
       }
 
-      document.getElementById('formContainer').style.display = 'none';
-      document.getElementById('formSuccess').classList.add('show');
+      const btn = document.querySelector('.form-submit');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '⏳ Sending…';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/submit-quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName: fname, lastName: lname, email, phone, destination: dest, travelDate, travelers, message })
+        });
+
+        if (!res.ok) throw new Error('Server error');
+
+        document.getElementById('formContainer').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      } catch (err) {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        document.getElementById('formError').style.display = 'block';
+        setTimeout(() => document.getElementById('formError').style.display = 'none', 5000);
+      }
     }
 
     // ── Smooth scroll offset for fixed nav ──────────────────
