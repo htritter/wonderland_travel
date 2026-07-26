@@ -1,7 +1,12 @@
-const prisma = require('../lib/prisma')
-const { Resend } = require('resend')
+const nodemailer = require('nodemailer')
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD
+  }
+})
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -14,42 +19,23 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'firstName, email, and destination are required' })
   }
 
-  let quote
   try {
-    quote = await prisma.quoteRequest.create({
-      data: { firstName, lastName, email, phone, destination, travelDate, travelers, message }
+    await transporter.sendMail({
+      from: `"The Wonderland Travel" <${process.env.GMAIL_USER}>`,
+      to: process.env.GMAIL_USER,
+      replyTo: email,
+      subject: `✨ New Quote Request — ${firstName} ${lastName} (${destination})`,
+      html: agentEmail({ firstName, lastName, email, phone, destination, travelDate, travelers, message })
     })
   } catch (err) {
-    console.error('DB error:', err)
-    return res.status(500).json({ error: 'Failed to save quote request' })
+    console.error('Email error:', err)
+    return res.status(500).json({ error: 'Failed to send quote request' })
   }
 
-  // Emails are best-effort — a failure here won't error the response
-  try {
-    await Promise.all([
-      // Notification to the travel agent
-      resend.emails.send({
-        from: process.env.FROM_EMAIL,
-        to: process.env.AGENT_EMAIL,
-        subject: `✨ New Quote Request — ${firstName} ${lastName} (${destination})`,
-        html: agentEmail({ firstName, lastName, email, phone, destination, travelDate, travelers, message, id: quote.id })
-      }),
-      // Confirmation to the client
-      resend.emails.send({
-        from: process.env.FROM_EMAIL,
-        to: email,
-        subject: `We got your request, ${firstName}! ✨`,
-        html: clientEmail({ firstName, destination })
-      })
-    ])
-  } catch (err) {
-    console.error('Email error (non-fatal):', err)
-  }
-
-  return res.status(200).json({ success: true, id: quote.id })
+  return res.status(200).json({ success: true })
 }
 
-function agentEmail({ firstName, lastName, email, phone, destination, travelDate, travelers, message, id }) {
+function agentEmail({ firstName, lastName, email, phone, destination, travelDate, travelers, message }) {
   const row = (label, val) => val
     ? `<tr>
         <td style="padding:8px 0;color:#5c5c7a;font-size:14px;width:140px;vertical-align:top">${label}</td>
@@ -80,33 +66,6 @@ function agentEmail({ firstName, lastName, email, phone, destination, travelDate
            style="display:inline-block;background:linear-gradient(135deg,#0d1145,#1a237e);color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:700;text-decoration:none">
           Reply to ${firstName} →
         </a>
-        <p style="margin:20px 0 0;font-size:11px;color:#b0aac8">Request ID: ${id}</p>
-      </div>
-    </div>
-  `
-}
-
-function clientEmail({ firstName, destination }) {
-  return `
-    <div style="font-family:'Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;background:#f8f6ff;border-radius:16px;overflow:hidden">
-      <div style="background:linear-gradient(135deg,#0d1145,#1a237e);padding:28px 32px;text-align:center">
-        <p style="margin:0 0 8px;font-size:36px">✨</p>
-        <h1 style="margin:0;color:#ffd54f;font-size:24px">Your Quote is On Its Way!</h1>
-        <p style="margin:8px 0 0;color:rgba(255,255,255,.75);font-size:15px">The Wonderland Travel</p>
-      </div>
-      <div style="padding:32px;text-align:center">
-        <p style="font-size:16px;color:#1c1c2e;line-height:1.7;margin:0 0 16px">
-          Hi <strong>${firstName}</strong> — we received your quote request for <strong>${destination}</strong> and we're so excited to start planning your magical trip! 🏰
-        </p>
-        <p style="font-size:15px;color:#5c5c7a;line-height:1.7;margin:0 0 28px">
-          We'll be back in touch <strong>within 24 hours</strong> with personalized options and pricing. In the meantime, feel free to reply to this email with any extra details or questions.
-        </p>
-        <div style="background:#fff;border-radius:12px;padding:20px;border:1px solid #e8e4f8;margin-bottom:28px">
-          <p style="margin:0;font-size:14px;color:#5c5c7a;font-style:italic">
-            "Planning a family vacation should be exciting — not stressful. Let me take care of every detail so you can simply enjoy the magic."
-          </p>
-        </div>
-        <p style="margin:0;font-size:13px;color:#b0aac8">The Wonderland Travel · hello@thewonderlandtravel.com</p>
       </div>
     </div>
   `
