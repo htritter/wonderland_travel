@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { firstName, lastName, email, phone, destination, travelDate, travelers, message } = req.body
+  const { firstName, lastName, email, phone, destination, travelDate, travelers, hasChildren, childrenAges, message } = req.body
 
   if (!firstName || !email || !destination) {
     return res.status(400).json({ error: 'firstName, email, and destination are required' })
@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
       to: process.env.GMAIL_USER,
       replyTo: email,
       subject: `✨ New Quote Request — ${firstName} ${lastName} (${destination})`,
-      html: agentEmail({ firstName, lastName, email, phone, destination, travelDate, travelers, message })
+      html: agentEmail({ firstName, lastName, email, phone, destination, travelDate, travelers, hasChildren, childrenAges, message })
     })
   } catch (err) {
     console.error('Email error:', err)
@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
   return res.status(200).json({ success: true })
 }
 
-function agentEmail({ firstName, lastName, email, phone, destination, travelDate, travelers, message }) {
+function agentEmail({ firstName, lastName, email, phone, destination, travelDate, travelers, hasChildren, childrenAges, message }) {
   const row = (label, val) => val
     ? `<tr>
         <td style="padding:8px 0;color:#5c5c7a;font-size:14px;width:140px;vertical-align:top">${label}</td>
@@ -57,6 +57,8 @@ function agentEmail({ firstName, lastName, email, phone, destination, travelDate
           ${row('Destination', destination)}
           ${row('Travel Date', travelDate)}
           ${row('Travelers', travelers)}
+          ${row('Traveling with Kids', hasChildren === 'yes' ? 'Yes' : 'No')}
+          ${row('Ages of Kids', hasChildren === 'yes' ? childrenAges : '')}
         </table>
         ${message ? `
         <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#0d1145;text-transform:uppercase;letter-spacing:.05em">Their Message</p>

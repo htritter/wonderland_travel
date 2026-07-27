@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Share your Wonderland Travel experience — tell us about your trip and leave a review." />
-  <title>Leave a Review | The Wonderland Travel</title>
+  <meta name="description" content="Explore the resorts, cruise lines, and destinations The Wonderland Travel plans beyond Disney — Royal Caribbean, Celebrity, Virgin Voyages, all-inclusives, and more." />
+  <title>Resorts &amp; Cruise Lines | The Wonderland Travel</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -120,6 +120,9 @@
       color: var(--gold);
       background: rgba(255,255,255,0.08);
     }
+    .nav-links a.active {
+      color: var(--gold);
+    }
     .nav-cta {
       background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
       color: var(--midnight) !important;
@@ -213,120 +216,136 @@
     }
     .page-header p {
       color: rgba(255,255,255,0.78);
-      max-width: 560px;
+      max-width: 580px;
       margin-inline: auto;
       font-size: 1.05rem;
     }
 
-    /* ─── Review section ────────────────────────────────────── */
-    .review-section { padding: 5rem 0; background: var(--white); }
-    .review-form {
-      max-width: 640px;
-      margin-inline: auto;
-      background: var(--off-white);
-      border-radius: var(--radius);
-      padding: 2.5rem;
-      box-shadow: var(--shadow);
-    }
-    .review-form h3 {
+    .section-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.3rem;
-      color: var(--midnight);
-      margin-bottom: 1.75rem;
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      margin-bottom: 1rem;
-    }
-    .form-group label {
-      font-size: 0.83rem;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
       font-weight: 700;
       color: var(--midnight);
-      letter-spacing: 0.03em;
+      line-height: 1.25;
     }
-    .form-group input,
-    .form-group textarea {
-      padding: 0.75rem 1rem;
-      border: 2px solid rgba(26,35,126,0.12);
-      border-radius: var(--radius-sm);
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.93rem;
-      color: var(--text);
-      background: var(--white);
-      transition: var(--transition);
-      outline: none;
+    .section-title .accent { color: var(--fairy); }
+    .section-desc {
+      color: var(--text-light);
+      font-size: 1.05rem;
+      max-width: 580px;
+      line-height: 1.8;
     }
-    .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: var(--magic);
-      box-shadow: 0 0 0 4px rgba(57,73,171,0.1);
-    }
-    .form-group textarea { resize: vertical; min-height: 120px; }
+    .text-center { text-align: center; }
+    .text-center .section-desc { margin-inline: auto; }
+    .text-center .section-label { justify-content: center; }
 
-    .star-rating {
+    /* ─── Resorts & cruises grid ────────────────────────────── */
+    .resorts-section { padding: 5rem 0 6rem; background: var(--white); }
+    .resort-group { margin-top: 3.5rem; }
+    .resort-group-title {
       display: flex;
-      flex-direction: row-reverse;
-      justify-content: flex-end;
-      gap: 0.25rem;
-      font-size: 2.2rem;
-      line-height: 1;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--midnight);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 2px solid rgba(26,35,126,0.1);
     }
-    .star-rating input { display: none; }
-    .star-rating label {
-      color: rgba(26,35,126,0.15);
+    .resort-group-title .icon { font-size: 1.4rem; }
+    .resort-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .resort-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
       cursor: pointer;
-      transition: color 0.15s;
-    }
-    .star-rating input:checked ~ label,
-    .star-rating label:hover,
-    .star-rating label:hover ~ label {
-      color: var(--gold-dark);
-    }
-
-    .form-submit {
-      width: 100%;
-      padding: 1rem;
-      background: linear-gradient(135deg, var(--midnight), var(--royal));
-      color: var(--white);
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-      font-weight: 800;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
+      min-height: 320px;
+      display: flex;
+      align-items: flex-end;
       transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+    .resort-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: var(--shadow-lg); }
+    .resort-card:hover .resort-overlay { opacity: 1; }
+    .resort-card:hover .resort-bg { transform: scale(1.06); }
+    .resort-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.6s ease;
+    }
+    .resort-bg.gradient-bg {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      font-size: 4.5rem;
     }
-    .form-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(13,17,69,0.35);
+    .resort-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(13,17,69,0.9) 0%, rgba(13,17,69,0.25) 55%, transparent 100%);
     }
-    .form-submit:disabled { opacity: 0.7; cursor: default; transform: none; }
-
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 2rem;
+    .resort-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(57,73,171,0.28);
+      opacity: 0;
+      transition: var(--transition);
     }
-    .form-success.show { display: block; }
-    .form-success h4 {
+    .resort-info {
+      position: relative;
+      z-index: 2;
+      padding: 1.75rem;
+      width: 100%;
+    }
+    .resort-badge {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      background: var(--gold);
+      color: var(--midnight);
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+    }
+    .resort-info h3 {
       font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .resort-info p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 34ch;
+    }
+
+    .resorts-cta {
+      margin-top: 3.5rem;
+      text-align: center;
+      padding: 2.5rem;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--off-white), #eee8ff);
+    }
+    .resorts-cta h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
       color: var(--midnight);
       margin-bottom: 0.5rem;
     }
-    .form-success p { color: var(--text-light); }
+    .resorts-cta p {
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+    }
 
     /* ─── Footer ─────────────────────────────────────────────── */
     footer {
@@ -423,9 +442,9 @@
       .mobile-menu { display: block; }
     }
     @media (max-width: 640px) {
-      .review-section { padding: 3.5rem 0; }
-      .review-form { padding: 1.75rem; }
-      .form-row { grid-template-columns: 1fr; }
+      .resorts-section { padding: 3.5rem 0 4rem; }
+      .resort-card { min-height: 260px; }
+      .resorts-cta { padding: 1.75rem; }
       .footer-bottom { flex-direction: column; text-align: center; }
     }
   </style>
@@ -455,7 +474,7 @@
       </a>
       <nav class="nav-links">
         <a href="index.html">Home</a>
-        <a href="resorts.html">Resorts &amp; Cruises</a>
+        <a href="resorts.html" class="active">Resorts &amp; Cruises</a>
         <a href="index.html#testimonials">Reviews</a>
         <a href="index.html#contact" class="nav-cta">✨ Free Quote</a>
       </nav>
@@ -468,58 +487,103 @@
   <!-- ── Page Header ──────────────────────────────────────── -->
   <section class="page-header">
     <div class="container">
-      <div class="section-label">Happy Travelers</div>
-      <h1>Share Your Wonderland Story</h1>
-      <p>Traveled with us recently? We'd love to hear how it went — your review helps us keep the magic going for the next family.</p>
+      <div class="section-label">Beyond the Magic Kingdom</div>
+      <h1>Resorts &amp; Cruise Lines</h1>
+      <p>Disney is our specialty, but our reach goes further. Here's a look at more of the resorts and cruise lines we plan — just ask and we'll build the perfect itinerary.</p>
     </div>
   </section>
 
-  <!-- ── Review Form ──────────────────────────────────────── -->
-  <section class="review-section">
+  <!-- ── Resorts / Cruises Grid ──────────────────────────────── -->
+  <section class="resorts-section">
     <div class="container">
-      <div class="review-form">
-        <h3>✨ Leave a Review</h3>
-        <div id="formContainer">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="rname">Your Name *</label>
-              <input type="text" id="rname" placeholder="First and last name" required />
-            </div>
-            <div class="form-group">
-              <label for="remail">Email Address</label>
-              <input type="email" id="remail" placeholder="your@email.com (optional)" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="rtrip">Trip / Destination *</label>
-            <input type="text" id="rtrip" placeholder="e.g. Walt Disney World, Family of 4" required />
-          </div>
-          <div class="form-group">
-            <label>Your Rating *</label>
-            <div class="star-rating" id="starRating">
-              <input type="radio" id="star5" name="rating" value="5" /><label for="star5">★</label>
-              <input type="radio" id="star4" name="rating" value="4" /><label for="star4">★</label>
-              <input type="radio" id="star3" name="rating" value="3" /><label for="star3">★</label>
-              <input type="radio" id="star2" name="rating" value="2" /><label for="star2">★</label>
-              <input type="radio" id="star1" name="rating" value="1" /><label for="star1">★</label>
+      <div class="text-center reveal">
+        <div class="section-label">Explore More</div>
+        <h2 class="section-title">Every Vacation, <span class="accent">One Agent</span></h2>
+        <p class="section-desc" style="margin-inline:auto;">
+          From high seas adventures to sun-soaked all-inclusives, these are a few more of the destinations we plan for families every day.
+        </p>
+      </div>
+
+      <div class="resort-group reveal">
+        <h3 class="resort-group-title"><span class="icon">🚢</span> Cruise Lines</h3>
+        <div class="resort-grid">
+          <div class="resort-card">
+            <div class="resort-bg" style="background-image:url('assets/royal_cruise.jpg');"></div>
+            <div class="resort-gradient"></div>
+            <div class="resort-overlay"></div>
+            <div class="resort-info">
+              <div class="resort-badge">🚢 Cruises</div>
+              <h3>Royal Caribbean</h3>
+              <p>Adventure of the Seas and beyond — from Caribbean getaways to Mediterranean voyages.</p>
             </div>
           </div>
-          <div class="form-group">
-            <label for="rtext">Your Review *</label>
-            <textarea id="rtext" placeholder="Tell us about your experience — what made your trip magical?" required></textarea>
+
+          <div class="resort-card">
+            <div class="resort-bg gradient-bg" style="background: linear-gradient(135deg, var(--midnight) 0%, var(--royal) 55%, var(--magic) 100%);">🛳️</div>
+            <div class="resort-gradient"></div>
+            <div class="resort-overlay"></div>
+            <div class="resort-info">
+              <div class="resort-badge">🚢 Cruises</div>
+              <h3>Celebrity Cruises</h3>
+              <p>Modern luxury at sea, with destinations spanning the globe and elevated onboard experiences.</p>
+            </div>
           </div>
-          <button class="form-submit" onclick="handleReviewSubmit(event)">
-            ✨ Submit My Review
-          </button>
-          <p id="formError" style="display:none;margin-top:1rem;color:#ef5350;font-size:0.88rem;text-align:center;font-weight:600;">
-            Something went wrong — please try again or email us directly.
-          </p>
+
+          <div class="resort-card">
+            <div class="resort-bg" style="background-image:url('assets/virgin_cruise.jpg');"></div>
+            <div class="resort-gradient"></div>
+            <div class="resort-overlay"></div>
+            <div class="resort-info">
+              <div class="resort-badge">🚢 Cruises</div>
+              <h3>Virgin Voyages</h3>
+              <p>Adults-only luxury cruising for couples and solo travelers who want a fresh take on the high seas.</p>
+            </div>
+          </div>
+
+          <div class="resort-card">
+            <div class="resort-bg gradient-bg" style="background: linear-gradient(135deg, var(--fairy) 0%, var(--rose) 55%, var(--gold) 100%);">🎉</div>
+            <div class="resort-gradient"></div>
+            <div class="resort-overlay"></div>
+            <div class="resort-info">
+              <div class="resort-badge">🚢 Cruises</div>
+              <h3>Carnival Cruises</h3>
+              <p>Fun-filled, affordable cruising with something for every age — the ultimate family sailing.</p>
+            </div>
+          </div>
         </div>
-        <div class="form-success" id="formSuccess">
-          <div style="font-size:4rem; margin-bottom:1rem;">🎉</div>
-          <h4>Thank You for Sharing!</h4>
-          <p>We really appreciate you taking the time to write this. We'll review it and may feature it on our site soon!</p>
+      </div>
+
+      <div class="resort-group reveal">
+        <h3 class="resort-group-title"><span class="icon">🌴</span> Resorts &amp; Theme Parks</h3>
+        <div class="resort-grid">
+          <div class="resort-card">
+            <div class="resort-bg" style="background-image:url('assets/all_inclusive.jpg');"></div>
+            <div class="resort-gradient"></div>
+            <div class="resort-overlay"></div>
+            <div class="resort-info">
+              <div class="resort-badge">🌴 All-Inclusive</div>
+              <h3>Sandals &amp; Beaches Resorts</h3>
+              <p>Luxury all-inclusive escapes across the Caribbean — romantic getaways and family-friendly fun alike.</p>
+            </div>
+          </div>
+
+          <div class="resort-card">
+            <div class="resort-bg" style="background-image:url('assets/universal.jpg');"></div>
+            <div class="resort-gradient"></div>
+            <div class="resort-overlay"></div>
+            <div class="resort-info">
+              <div class="resort-badge">🎭 Theme Parks</div>
+              <h3>Universal Studios</h3>
+              <p>Wizarding World of Harry Potter, Epic Universe, and thrilling rides for the whole family in Orlando.</p>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="resorts-cta">
+        <h3>Don't See Your Dream Destination?</h3>
+        <p>If you can dream it, we can plan it — international travel, honeymoons, group trips, and more.</p>
+        <a href="index.html#contact" class="btn btn-primary">✨ Get a Free Quote</a>
       </div>
     </div>
   </section>
@@ -562,59 +626,6 @@
         --pdelay: ${Math.random() * 10}s;
       `;
       particlesEl.appendChild(p);
-    }
-
-    // ── Form submit ──────────────────────────────────────────
-    async function handleReviewSubmit(e) {
-      e.preventDefault();
-
-      const name    = document.getElementById('rname').value.trim();
-      const email   = document.getElementById('remail').value.trim();
-      const trip    = document.getElementById('rtrip').value.trim();
-      const text    = document.getElementById('rtext').value.trim();
-      const ratingEl = document.querySelector('input[name="rating"]:checked');
-      const rating  = ratingEl ? ratingEl.value : '';
-
-      const missing = [];
-      if (!name) missing.push(document.getElementById('rname'));
-      if (!trip) missing.push(document.getElementById('rtrip'));
-      if (!text) missing.push(document.getElementById('rtext'));
-
-      if (missing.length || !rating) {
-        missing.forEach(el => {
-          el.style.borderColor = '#ef5350';
-          setTimeout(() => el.style.borderColor = '', 2000);
-        });
-        if (!rating) {
-          const stars = document.getElementById('starRating');
-          stars.style.outline = '2px solid #ef5350';
-          setTimeout(() => stars.style.outline = '', 2000);
-        }
-        return;
-      }
-
-      const btn = document.querySelector('.form-submit');
-      const originalHTML = btn.innerHTML;
-      btn.innerHTML = '⏳ Sending…';
-      btn.disabled = true;
-
-      try {
-        const res = await fetch('/api/submit-review', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, trip, rating, text })
-        });
-
-        if (!res.ok) throw new Error('Server error');
-
-        document.getElementById('formContainer').style.display = 'none';
-        document.getElementById('formSuccess').classList.add('show');
-      } catch (err) {
-        btn.innerHTML = originalHTML;
-        btn.disabled = false;
-        document.getElementById('formError').style.display = 'block';
-        setTimeout(() => document.getElementById('formError').style.display = 'none', 5000);
-      }
     }
   </script>
 </body>
